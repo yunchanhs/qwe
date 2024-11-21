@@ -4,7 +4,7 @@ import datetime
 import schedule
 from requests.auth import AuthBase
 import requests
-from fbprophet import Prophet
+from Prophet import Prophet
 
 access = "J8iGqPwfjkX7Yg9bdzwFGkAZcTPU7rElXRozK7O4"
 secret = "6MGxH2WjIftgQ85SLK1bcLxV4emYvrpbk6nYuqRN"
