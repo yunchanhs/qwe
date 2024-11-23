@@ -10,8 +10,8 @@ from stable_baselines3.common.envs import DummyVecEnv
 import matplotlib.pyplot as plt
 
 # 업비트 API 연결
-access_key = 'your-access-key'
-secret_key = 'your-secret-key'
+access_key = 'J8iGqPwfjkX7Yg9bdzwFGkAZcTPU7rElXRozK7O4'
+secret_key = '6MGxH2WjIftgQ85SLK1bcLxV4emYvrpbk6nYuqRN'
 upbit = pyupbit.Upbit(access_key, secret_key)
 
 # 모든 마켓 조회 (코인 목록)
