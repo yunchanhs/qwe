@@ -140,7 +140,7 @@ if __name__ == "__main__":
 
                     # 매수 조건 (MACD 크로스, RSI, ADX, EMA, ATR)
                     if macd > signal and rsi < 30 and adx > 25 and ema > current_price and atr > 0.5 and krw_balance > 5000:
-                        buy_amount = krw_balance * 0.05  # 잔고의 5% 매수
+                        buy_amount = krw_balance * 0.1  # 잔고의 10% 매수
                         buy_result = buy_crypto_currency(ticker, buy_amount)
                         if buy_result:
                             entry_prices[ticker] = current_price  # 진입가 저장
