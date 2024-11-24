@@ -114,7 +114,7 @@ def setup_ppo_model(data, lstm_model):
     env = DummyVecEnv([lambda: env])
 
     ppo_model = PPO("MlpPolicy", env, verbose=1)
-    ppo_model.learn(total_timesteps=10000)
+    ppo_model.learn(total_timesteps=500000)
     return ppo_model, env
 
 # 모든 코인에 대해 매매 수행
