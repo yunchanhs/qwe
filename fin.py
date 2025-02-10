@@ -61,7 +61,7 @@ def get_ohlcv_cached(ticker, interval="minute60"):
 
 def detect_surge_tickers():
     tickers = pyupbit.get_tickers(fiat="KRW")  # 한국 원화 기준 코인 목록 가져오기
-    
+
 # 머신러닝 모델 정의
 class TransformerModel(nn.Module):
     def __init__(self, input_dim, d_model, num_heads, num_layers, output_dim):
@@ -214,7 +214,7 @@ class TradingDataset(Dataset):
         y = self.data.iloc[idx + self.seq_len]['future_return']
         return torch.tensor(x, dtype=torch.float32), torch.tensor(y, dtype=torch.float32)
 
-def train_transformer_model(ticker, epochs=30):  # epochs 기본값을 50으로 설정
+def train_transformer_model(ticker, epochs=20):  # epochs 기본값을 50으로 설정
     print(f"모델 학습 시작: {ticker}")  # 모델 학습 시작 시 출력
     data = get_features(ticker)
     seq_len = 30
@@ -308,8 +308,8 @@ if __name__ == "__main__":
 
                 # 쿨다운 타임 체크
                 if ticker in recent_trades and datetime.now() - recent_trades[ticker] < COOLDOWN_TIME:
-                    continue
-
+                    continue 
+                    
                 try:
                     # AI 및 지표 계산
                     ml_signal = get_ml_signal(ticker, models[ticker])
@@ -318,19 +318,10 @@ if __name__ == "__main__":
                     adx = get_adx(ticker)
                     current_price = pyupbit.get_current_price(ticker)
 
-                    # 🛠 [DEBUG] 매수 조건 확인용 로그 추가
-                    print(f"[DEBUG] {ticker} 매수 조건 검사")
-                    print(f" - ML 신호: {ml_signal:.4f}")
-                    print(f" - MACD: {macd:.4f}, Signal: {signal:.4f}")
-                    print(f" - RSI: {rsi:.2f}")
-                    print(f" - ADX: {adx:.2f}")
-                    print(f" - 현재 가격: {current_price:.2f}")
-
                     # 매수 조건
                     if isinstance(ml_signal, (int, float)) and 0 <= ml_signal <= 1:
-                        if ml_signal > ML_THRESHOLD and macd > signal and rsi < 40 and adx > 20:
+                        if ml_signal > ML_THRESHOLD and macd > signal and rsi < 30 and adx > 25:
                             krw_balance = get_balance("KRW")
-                            print(f"[DEBUG] 보유 원화 잔고: {krw_balance:.2f}")
                             if krw_balance > 5000:
                                 buy_amount = krw_balance * 0.3
                                 buy_result = buy_crypto_currency(ticker, buy_amount)
@@ -339,27 +330,13 @@ if __name__ == "__main__":
                                     highest_prices[ticker] = current_price
                                     recent_trades[ticker] = datetime.now()
                                     print(f"[{ticker}] 매수 완료: {buy_amount:.2f}원, 가격: {current_price:.2f}")
-                                else:
-                                    print(f"[{ticker}] 매수 요청 실패")
-                            else:
-                                print(f"[{ticker}] 매수 불가 (원화 부족)")
-                        else:
-                            print(f"[{ticker}] 매수 조건 불충족")
-                        
+
 
                     # 매도 조건
                     elif ticker in entry_prices:
                         entry_price = entry_prices[ticker]
                         highest_prices[ticker] = max(highest_prices[ticker], current_price)
                         change_ratio = (current_price - entry_price) / entry_price
-                    
-                    # 🛠 [DEBUG] 매도 조건 확인용 로그 추가
-                    print(f"[DEBUG] {ticker} 매도 조건 검사")
-                    print(f" - 진입 가격: {entry_price:.2f}")
-                    print(f" - 최고 가격: {highest_prices[ticker]:.2f}")
-                    print(f" - 현재 가격: {current_price:.2f}")
-                    print(f" - 변동률: {change_ratio:.4f}")
-                    print(f" - AI 신호: {ml_signal:.4f}")
 
                         # 손절 조건 보완
                         if change_ratio <= STOP_LOSS_THRESHOLD:
@@ -389,3 +366,4 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         print("프로그램이 종료되었습니다.")
+                                                                                                                                                                                                                                                                      368,55-43     Bot
