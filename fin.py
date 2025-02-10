@@ -320,7 +320,7 @@ if __name__ == "__main__":
 
                     # 매수 조건
                     if isinstance(ml_signal, (int, float)) and 0 <= ml_signal <= 1:
-                        if ml_signal > ML_THRESHOLD and macd > signal and rsi < 30 and adx > 25:
+                        if ml_signal > ML_THRESHOLD and macd > signal and rsi < 40 and adx > 20:
                             krw_balance = get_balance("KRW")
                             if krw_balance > 5000:
                                 buy_amount = krw_balance * 0.3
